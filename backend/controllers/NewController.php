@@ -1,42 +1,47 @@
 <?php
 /**
- * 管理员后台权限管理。
+ * 文章管理。
  * @author winerQin
- * @date 2016-09-25
+ * @date 2016-09-26
  */
 
 namespace backend\controllers;
 
 use yii\web\Controller;
-
-class PermissionController extends Controller {
+class NewsController extends Controller {
 
     /**
-     * 角色权限列表。
+     * 文章列表。
      */
     public function actionList() {
 
     }
 
     /**
-     * 为角色添加权限。
+     * 添加文章。
      */
     public function actionAdd() {
 
     }
 
     /**
-     * 编辑角色权限。
+     * 编辑文章。
      */
     public function actionEdit() {
 
     }
 
     /**
-     * 删除角色权限。
+     * 删除文章。
      */
     public function actionDelete() {
 
     }
 
+    /**
+     * 文章排序。
+     */
+    public function actionSort() {
+
+    }
 }

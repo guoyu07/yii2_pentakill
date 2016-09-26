@@ -1,48 +1,47 @@
 <?php
 /**
- * 管理员角色管。
+ * 分类管理。
  * @author winerQin
- * @date 2016-09-25
+ * @date 2016-09-26
  */
 
 namespace backend\controllers;
 
 use yii\web\Controller;
-
-class RoleController extends Controller {
+class CategoryController extends Controller {
 
     /**
-     * 角色列表。
+     * 分类列表。
      */
     public function actionList() {
 
     }
 
     /**
-     * 角色添加。
+     * 分类添加。
      */
     public function actionAdd() {
 
     }
 
     /**
-     * 角色编辑。
+     * 分类编辑。
      */
     public function actionEdit() {
 
     }
 
     /**
-     * 角色删除。
+     * 分类删除。
      */
     public function actionDelete() {
 
     }
 
     /**
-     * 设置角色权限。
+     * 分类排序。
      */
-    public function actionSetPermission() {
+    public function actionSort() {
 
     }
 }

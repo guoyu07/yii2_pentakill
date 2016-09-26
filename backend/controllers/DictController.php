@@ -8,6 +8,7 @@
 namespace backend\controllers;
 
 use yii\web\Controller;
+
 class DictController extends Controller {
 
     /**
@@ -20,21 +21,21 @@ class DictController extends Controller {
     /**
      * 添加字典类型。
      */
-    public function actionAddDictType() {
+    public function actionDictTypeAdd() {
 
     }
 
     /**
      * 编辑字典类型。
      */
-    public function actionEditDictType() {
+    public function actionDictTypeEdit() {
 
     }
 
     /**
      * 删除字典类型。
      */
-    public function actionDeleteDictType() {
+    public function actionDictTypeDelete() {
 
     }
 

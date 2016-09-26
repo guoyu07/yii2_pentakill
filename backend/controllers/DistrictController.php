@@ -1,48 +1,55 @@
 <?php
 /**
- * 管理员角色管。
+ * 省市区管理。
  * @author winerQin
- * @date 2016-09-25
+ * @date 2016-09-26
  */
 
 namespace backend\controllers;
 
 use yii\web\Controller;
 
-class RoleController extends Controller {
+class DistrictController extends Controller {
 
     /**
-     * 角色列表。
+     * 地区列表。
      */
     public function actionList() {
 
     }
 
     /**
-     * 角色添加。
+     * 添加地区。
      */
     public function actionAdd() {
 
     }
 
     /**
-     * 角色编辑。
+     * 编辑地区。
      */
     public function actionEdit() {
 
     }
 
     /**
-     * 角色删除。
+     * 地区删除。
      */
     public function actionDelete() {
 
     }
 
     /**
-     * 设置角色权限。
+     * 地区排序。
      */
-    public function actionSetPermission() {
+    public function actionSort() {
+
+    }
+
+    /**
+     * 创建地区 JSON 文件。
+     */
+    public function actionCreateJsonFile() {
 
     }
 }

@@ -5,328 +5,280 @@ use pentakill;
 
 DROP TABLE IF EXISTS `ms_sms_log`;
 CREATE TABLE ms_sms_log (
-log_id INT(11) UNSIGNED AUTO_INCREMENT COMMENT 'ÈÕÖ¾ID',
-op_type TINYINT(1) NOT NULL COMMENT '²Ù×÷ÀàÐÍ£º1·¢ËÍ¡¢2ÑéÖ¤',
-mobilephone CHAR(11) NOT NULL COMMENT 'ÊÖ»úºÅÂë',
-sms_txt CHAR(200) NOT NULL COMMENT '¶ÌÐÅÄÚÈÝ',
-sms_code CHAR(6) NOT NULL DEFAULT '' COMMENT 'ÑéÖ¤Âë¡£Èç¹ûÊÇ·ÇÑéÖ¤Âë¶ÌÐÅ£¬´ËÖµÎª¿Õ×Ö·û´®',
-is_destroy TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'ÊÇ·ñÑéÖ¤³É¹¦Á¢¼´Ïú»Ù¡£1ÊÇ¡¢0·ñ',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '´´½¨Ê±¼ä',
+log_id INT(11) UNSIGNED AUTO_INCREMENT COMMENT 'æ—¥å¿—ID',
+op_type TINYINT(1) NOT NULL COMMENT 'æ“ä½œç±»åž‹ï¼š1å‘é€ã€2éªŒè¯',
+mobilephone CHAR(11) NOT NULL COMMENT 'æ‰‹æœºå·ç ',
+sms_txt CHAR(200) NOT NULL COMMENT 'çŸ­ä¿¡å†…å®¹',
+sms_code CHAR(6) NOT NULL DEFAULT '' COMMENT 'éªŒè¯ç ã€‚å¦‚æžœæ˜¯éžéªŒè¯ç çŸ­ä¿¡ï¼Œæ­¤å€¼ä¸ºç©ºå­—ç¬¦ä¸²',
+is_destroy TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'æ˜¯å¦éªŒè¯æˆåŠŸç«‹å³é”€æ¯ã€‚1æ˜¯ã€0å¦',
+created_time INT(11) UNSIGNED NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
 PRIMARY KEY(log_id),
 KEY(mobilephone)
-)ENGINE = InnoDB DEFAULT CHARSET = 'UTF8' COMMENT '¶ÌÐÅ·¢ËÍ/ÑéÖ¤ÈÕÖ¾±í';
+)ENGINE = InnoDB DEFAULT CHARSET = 'UTF8' COMMENT 'çŸ­ä¿¡å‘é€/éªŒè¯æ—¥å¿—è¡¨';
 
 
-# Ã¿ÖÜ¸üÐÂ±¸·ÝÒ»´Î£¬°´ÔÂ·Ý±£´æÀúÊ·Êý¾Ý¡£
+# åº”ç”¨æ—¥å¿—è¡¨
 DROP TABLE IF EXISTS ms_log;
 CREATE TABLE ms_log(
-	log_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Ö÷¼ü',
-	log_type TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'ÈÕÖ¾ÀàÐÍ£º²Î¼ûmodels\Log³£Á¿',
-	log_user_id INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '²Ù×÷ÓÃ»§ID',
-	log_time INT(11) UNSIGNED NOT NULL COMMENT 'ÈÕÖ¾²úÉúÊ±¼ä',
-	errcode INT(11) NOT NULL DEFAULT '0' COMMENT '´íÎó±àºÅ',
-	content TEXT COMMENT 'ÈÕÖ¾ÄÚÈÝ',
-	created_time INT(11) UNSIGNED NOT NULL COMMENT 'ÈÕÖ¾´´½¨Ê±¼ä',
+	log_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ä¸»é”®',
+	log_type TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'æ—¥å¿—ç±»åž‹ï¼šå‚è§models\Logå¸¸é‡',
+	log_user_id INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'æ“ä½œç”¨æˆ·ID',
+	log_time INT(11) UNSIGNED NOT NULL COMMENT 'æ—¥å¿—äº§ç”Ÿæ—¶é—´',
+	errcode INT(11) NOT NULL DEFAULT '0' COMMENT 'é”™è¯¯ç¼–å·',
+	content TEXT COMMENT 'æ—¥å¿—å†…å®¹',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT 'æ—¥å¿—åˆ›å»ºæ—¶é—´',
 	PRIMARY KEY(log_id)
-) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT 'ÏµÍ³ÈÕÖ¾±í';
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT 'ç³»ç»Ÿæ—¥å¿—è¡¨';
 
 
-# ×ÖµäÀàÐÍ±í
+# å­—å…¸ç±»åž‹è¡¨
 DROP TABLE IF EXISTS ms_dict_type;
 CREATE TABLE ms_dict_type(
-	dict_type_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Ö÷¼ü',
-	type_code CHAR(50) NOT NULL COMMENT '×ÖµäÀàÐÍ±àÂë',
-    type_name CHAR(50) NOT NULL COMMENT '×ÖµäÀàÐÍÃû³Æ',
-	value_more TINYINT(1) NOT NULL COMMENT 'ÖµÊÇ·ñ¶àÁÐ£º1ÊÇ¡¢0·ñ ',
-	value_type CHAR(20) NOT NULL COMMENT '×ÖµäÖµÀàÐÍ:',
-    description CHAR(200) NOT NULL DEFAULT '' COMMENT '×ÖµäÀàÐÍÃèÊö',
-    status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '×´Ì¬£º0Ê§Ð§¡¢1ÓÐÐ§¡¢2É¾³ý',
-    created_by INT(11) UNSIGNED NOT NULL COMMENT 'ÀàÐÍ´´½¨ÈË',
-	created_time INT(11) UNSIGNED NOT NULL COMMENT 'ÀàÐÍ´´½¨Ê±¼ä',
-	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ÀàÐÍÐÞ¸ÄÈË',
-	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ÀàÐÍÐÞ¸ÄÊ±¼ä',
+	dict_type_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ä¸»é”®',
+	type_code CHAR(50) NOT NULL COMMENT 'å­—å…¸ç±»åž‹ç¼–ç ',
+    type_name CHAR(50) NOT NULL COMMENT 'å­—å…¸ç±»åž‹åç§°',
+	value_more TINYINT(1) NOT NULL COMMENT 'å€¼æ˜¯å¦å¤šåˆ—ï¼š1æ˜¯ã€0å¦ ',
+	value_type CHAR(20) NOT NULL COMMENT 'å­—å…¸å€¼ç±»åž‹:',
+    description CHAR(200) NOT NULL DEFAULT '' COMMENT 'å­—å…¸ç±»åž‹æè¿°',
+    status TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'çŠ¶æ€ï¼š0å¤±æ•ˆã€1æœ‰æ•ˆã€2åˆ é™¤',
+    created_by INT(11) UNSIGNED NOT NULL COMMENT 'ç±»åž‹åˆ›å»ºäºº',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT 'ç±»åž‹åˆ›å»ºæ—¶é—´',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ç±»åž‹ä¿®æ”¹äºº',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ç±»åž‹ä¿®æ”¹æ—¶é—´',
 	PRIMARY KEY(dict_type_id),
 	KEY `type_code` (type_code)
-) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '×ÖµäÀàÐÍ±í';
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT 'å­—å…¸ç±»åž‹è¡¨';
 
-# ×ÖµäÊý¾Ý±í
+# å­—å…¸æ•°æ®è¡¨
 DROP TABLE IF EXISTS ms_dict;
 CREATE TABLE ms_dict(
-	dict_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Ö÷¼ü',
-	dict_type_id INT(11) UNSIGNED NOT NULL COMMENT 'Ö÷¼ü',
-	dict_code CHAR(50) NOT NULL COMMENT '×Öµä±àÂë',
-    dict_value CHAR(255) NOT NULL DEFAULT '' COMMENT '×ÖµäÖµ',
-    description CHAR(255) NOT NULL DEFAULT '' COMMENT '×ÖµäÀàÐÍÃèÊö',
-    listorder SMALLINT(1) NOT NULL DEFAULT '0' COMMENT 'ÅÅÐò¡£Ð¡ÔÚÇ°',
-    status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '×´Ì¬£º0Ê§Ð§¡¢1ÓÐÐ§¡¢2É¾³ý',
-    created_by INT(11) UNSIGNED NOT NULL COMMENT 'ÀàÐÍ´´½¨ÈË',
-	created_time INT(11) UNSIGNED NOT NULL COMMENT 'ÀàÐÍ´´½¨Ê±¼ä',
-	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ÀàÐÍÐÞ¸ÄÈË',
-	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ÀàÐÍÐÞ¸ÄÊ±¼ä',
+	dict_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ä¸»é”®',
+	dict_type_id INT(11) UNSIGNED NOT NULL COMMENT 'ä¸»é”®',
+	dict_code CHAR(50) NOT NULL COMMENT 'å­—å…¸ç¼–ç ',
+    dict_value CHAR(255) NOT NULL DEFAULT '' COMMENT 'å­—å…¸å€¼',
+    description CHAR(255) NOT NULL DEFAULT '' COMMENT 'å­—å…¸ç±»åž‹æè¿°',
+    listorder SMALLINT(1) NOT NULL DEFAULT '0' COMMENT 'æŽ’åºã€‚å°åœ¨å‰',
+    status TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'çŠ¶æ€ï¼š0å¤±æ•ˆã€1æœ‰æ•ˆã€2åˆ é™¤',
+    created_by INT(11) UNSIGNED NOT NULL COMMENT 'ç±»åž‹åˆ›å»ºäºº',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT 'ç±»åž‹åˆ›å»ºæ—¶é—´',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ç±»åž‹ä¿®æ”¹äºº',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ç±»åž‹ä¿®æ”¹æ—¶é—´',
 	PRIMARY KEY(dict_id),
 	KEY(dict_type_id)
-) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '×ÖµäÊý¾Ý±í';
-INSERT INTO ms_dict (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) 
-VALUES 
-('1', '1', 'ÎÄÕÂ·ÖÀà', 'ÎÄÕÂ·ÖÀàµÄÖµ×îºÃ±ð¸ü¸Ä¡£ÒòÎª£¬»áÓ°Ïì´Ë·ÖÀà¹ØÁªµÄ×Ó·ÖÀà¡£ÈçÈ·ÊµÒª±ä¸ü£¬Çë¼ì²é´ËID¶ÔÓ¦µÄ±íms_categoryµÄ·ÖÀàÊÇ·ñÓÐÖµ¡£Èç¹ûÓÐÇë´¦ÀíÖ®ºóÔÙ±ä¸ü´ËÖµ¡£', '0', '1', '1', unix_timestamp(now()), '0', '0'),
-('1', '2', 'ÓÑÇéÁ´½Ó·ÖÀà', 'Çë±ðËæÒâ¸ü¸Ä±àÂëÖµ¡£ÒòÎªÓëËü¹ØÁªµÄ×Ó·ÖÀàÊý¾Ý»áÊ§È¥ÒÀÀµ¡£', '0', '1', '1', unix_timestamp(now()), '0', '0'),
-('1', '3', 'ÉÌÆ··ÖÀà', 'Çë±ðËæÒâ¸ü¸Ä±àÂëÖµ¡£ÒòÎªÓëËü¹ØÁªµÄ×Ó·ÖÀàÊý¾Ý»áÊ§È¥ÒÀÀµ¡£', '0', '1', '1', unix_timestamp(now()), '0', '0'),
-('2', '1', '¶©ÔÄºÅ', '¶©ÔÄºÅ¡£', '0', '1', '1', unix_timestamp(now()), '0', '0'),
-('2', '2', '·þÎñºÅ', '·þÎñºÅ¡£', '0', '1', '1', unix_timestamp(now()), '0', '0'),
-('3', '3', 'ÆóÒµºÅ', 'ÆóÒµºÅ¡£', '0', '1', '1', unix_timestamp(now()), '0', '0');
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT 'å­—å…¸æ•°æ®è¡¨';
 
 
-
-# ÏµÍ³ÅäÖÃ±í
-# Ò»Ð©ÐèÒª¶¯Ì¬ÐÞ¸ÄµÄÅäÖÃ¡£
-DROP TABLE IF EXISTS ms_config;
-CREATE TABLE ms_config(
-	config_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Ö÷¼ü',
-	ctitle CHAR(255) NOT NULL COMMENT 'ÅäÖÃ±êÌâ',
-	cname CHAR(255) NOT NULL COMMENT 'Ãû³Æ',
-	cvalue CHAR(255) NOT NULL DEFAULT '' COMMENT '¿ª·¢»·¾³Öµ',
-	description CHAR(255) NOT NULL DEFAULT '' COMMENT 'ÅäÖÃÃèÊö',
-    status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '×´Ì¬£º0Ê§Ð§¡¢1ÓÐÐ§¡¢2É¾³ý',
-    created_by INT(11) UNSIGNED NOT NULL COMMENT 'ÀàÐÍ´´½¨ÈË',
-	created_time INT(11) UNSIGNED NOT NULL COMMENT 'ÀàÐÍ´´½¨Ê±¼ä',
-	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ÀàÐÍÐÞ¸ÄÈË',
-	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ÀàÐÍÐÞ¸ÄÊ±¼ä',
-	PRIMARY KEY(config_id),
-	KEY `cname` (cname)
-) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT 'ÏµÍ³ÅäÖÃ±í';
-
-INSERT INTO `ms_config` VALUES ('1', 'ÅÅËûµÇÂ¼', 'is_unique_login', '1', '1ÊÇ¡¢0·ñ¡£¼´Í¬Ò»Ê±¼äÕËºÅÖ»ÄÜÔÚÒ»¸öµØ·½µÇÂ¼¡£²»ÔÊÐíÕËºÅÔÚÆäËûµØ·½µÇÂ¼¡£', '1', '1', unix_timestamp(now()), '0', '0');
-INSERT INTO `ms_config` VALUES ('2', 'ÍøÕ¾Ãû³Æ', 'site_name', '²»µ¥Âó', '', '1', '1', '1474353609', '0', '0');
-INSERT INTO `ms_config` VALUES ('3', 'PCµÇÂ¼³¬Ê±Ê±¼ä(·ÖÖÓ)', 'pc_logout_time', '30', 'µÇÂ¼³¬Ê±Ê±¼ä¡£¾àÀëÉÏ´Î×îºó²Ù×÷Ê±¼ä´óÓÚµ±Ç°Ö¸¶¨Ê±¼ä·ÖÖÓÄÚ½«µÇÂ¼³¬Ê±²¢ÍË³öµÇÂ¼', '1', '1', unix_timestamp(now()), '0', '0');
-INSERT INTO `ms_config` VALUES ('4', '¹ÜÀíºóÌ¨ÓòÃû', 'backend_domain_name', 'http://dev-backend.yesnophp.com/', 'Éæ¼°µ½ÍøÕ¾Ò³Ãæ»ò×ÊÔ´µÄÁ´½ÓµØÖ·', '1', '1', unix_timestamp(now()), '0', '0');
-INSERT INTO `ms_config` VALUES ('5', 'Ç°Ì¨ÓòÃû', 'frontend_domain_name', 'http://dev-frontend.yesnophp.com/', 'Éæ¼°µ½ÍøÕ¾Ò³Ãæ»ò×ÊÔ´µÄÁ´½ÓµØÖ·', '1', '1', unix_timestamp(now()), '0', '0');
-INSERT INTO `ms_config` VALUES ('6', 'Î¢ÐÅÓòÃû', 'wx_domain_name', 'http://dev-wx.yesnophp.com/', 'Éæ¼°µ½ÍøÕ¾Ò³Ãæ»ò×ÊÔ´µÄÁ´½ÓµØÖ·', '1', '1', unix_timestamp(now()), '0', '0');
-INSERT INTO `ms_config` VALUES ('7', '½Ó¿ÚÓòÃû', 'api_domain_name', 'http://dev-api.yesnophp.com/', 'Éæ¼°µ½ÍøÕ¾Ò³Ãæ»ò×ÊÔ´µÄÁ´½ÓµØÖ·', '1', '1', unix_timestamp(now()), '0', '0');
-INSERT INTO `ms_config` VALUES ('8', '¾²Ì¬×ÊÔ´ÓòÃû', 'statics_domain_name', 'http://dev-statics.yesnophp.com/', 'Éæ¼°µ½ÍøÕ¾Ò³Ãæ»ò×ÊÔ´µÄÁ´½ÓµØÖ·', '1', '1', unix_timestamp(now()), '0', '0');
-INSERT INTO `ms_config` VALUES ('9', 'ÉÌ¼ÒÖÐÐÄÓòÃû', 'shop_domain_name', 'http://dev-shop.yesnophp.com/', 'Éæ¼°µ½ÍøÕ¾Ò³Ãæ»òÉÌ¼ÒÖÐÐÄµÄÁ´½ÓµØÖ·', '1', '1', unix_timestamp(now()), '0', '0');
-INSERT INTO `ms_config` VALUES ('10', 'ÕË»§ÖÐÐÄÓòÃû', 'account_domain_name', 'http://dev-account.yesnophp.com/', 'Éæ¼°µ½ÍøÕ¾Ò³Ãæ»òÕË»§ÖÐÐÄµÄÁ´½ÓµØÖ·', '1', '1', unix_timestamp(now()), '0', '0');
-INSERT INTO `ms_config` VALUES ('11', 'Í¼Æ¬ÎÄ¼þ×ÊÔ´ÓòÃû', 'files_domain_name', 'http://dev-files.yesnophp.com/', 'Éæ¼°µ½ÍøÕ¾Í¼Æ¬ÎÄ¼þ²¿·Ö', '1', '1', unix_timestamp(now()), '0', '0');
-INSERT INTO `ms_config` VALUES ('12', 'ÓÃ»§È¨ÏÞcookie×÷ÓÃÓò', 'user_auth_cookie_domain_name', '.yesnophp.com', '¼´´ËÓòÏÂËùÓÐÓòÃû¶¼¿ÉÒÔ×Ô¶¯µÇÂ¼', '1', '1', unix_timestamp(now()), '0', '0');
-INSERT INTO `ms_config` VALUES ('13', 'APPµÇÂ¼³¬Ê±Ê±¼ä(Ìì)', 'app_logout_time', '30', 'µÇÂ¼³¬Ê±Ê±¼ä¡£¾àÀëÉÏ´Î×îºó²Ù×÷Ê±¼ä´óÓÚµ±Ç°Ö¸¶¨Ê±¼ä·ÖÖÓÄÚ½«µÇÂ¼³¬Ê±²¢ÍË³öµÇÂ¼', '1', '1', unix_timestamp(now()), '0', '0');
-INSERT INTO `ms_config` VALUES ('14', '¹ÜÀíÔ±cookie×÷ÓÃÓò', 'admin_cookie_domain', '.dev-backend.yesnophp.com', 'Îª±ÜÃâcookieÖµ±»Ç°Ì¨Ê¹ÓÃ£¬ÅäÖÃµÄÓò±ØÐëÊÇ¹ÜÀíºóÌ¨µÄÓòÃû¡£', '1', '1', unix_timestamp(now()), '0', '0');
-INSERT INTO `ms_config` VALUES ('15', 'ºóÌ¨µÇÂ¼³¬Ê±Ê±¼ä(·ÖÖÓ)', 'admin_logout_time', '30', '³¬Ê±ÔòÐèÒªÖØÐÂµÇÂ¼', '1', '1', unix_timestamp(now()), '0', '0');
-INSERT INTO `ms_config` VALUES ('16', 'ÏµÍ³Î¬»¤×´Ì¬', 'system_status', '1', '³ý¹ÜÀíºóÌ¨Ö®ÍâµÄµØ·½Î¬»¤×´Ì¬¡£1ÊÇÕý³£¡¢0ÊÇ¹Ø±ÕÏµÍ³', '1', '1', unix_timestamp(now()), '0', '0');
-INSERT INTO `ms_config` VALUES ('17', 'ÏµÍ³ÒµÎñÔËÐÐµÈ¼¶', 'system_service_level', '0', 'Ê¾Àý£º1,8 ¡£1:×¢²á¹¦ÄÜ¡¢2:µÇÂ¼¹¦ÄÜ¡¢4:ÕÒ»ØÃÜÂë¡¢8:ÃÜÂëÐÞ¸Ä¡¢16:Ö§¸¶¹¦ÄÜ¡¢32:¶ÌÐÅ¹¦ÄÜ¡¢64:ÓÊ¼þ¹¦ÄÜ¡¢128:ÆÀ¼Û¹¦ÄÜ¡¢256:ÉÏ´«¹¦ÄÜ¡¢512:¶©µ¥²é¿´¹¦ÄÜ¡¢1024:ÌáÏÖ¹¦ÄÜ¡¢2048:API½Ó¿Ú¡¢4096:Î¢ÐÅÓ¦ÓÃ¡¢8192:¹Ø±ÕÈ«Õ¾£¨³ýºóÌ¨£©', '1', '1', unix_timestamp(now()), '0', '0');
-INSERT INTO `ms_config` VALUES ('18', 'luosimao¶ÌÐÅKEY', 'luosimao_sms_key', '5d68e2564cc9deac5bc8d74935dc4e8c', 'luosimao¶ÌÐÅ·¢ËÍKEY¡£', '1', '1', unix_timestamp(now()), '0', '0');
-INSERT INTO `ms_config` VALUES ('19', 'Ê¡ÊÐÇøJSONÎÄ¼þ¸üÐÂ°æ±¾', 'district_json_version', '', 'Ê¡ÊÐÇøJSONÎÄ¼þ¸üÐÂ°æ±¾', '1', '1', unix_timestamp(now()), '0', '0');
-
-
-# ÎÄ¼þ±í
-# ÉÏ´«µÄÍ¼Æ¬¡¢ÊÓÆµµÈÎÄ¼þ¼ÇÂ¼ÔÚ´Ë±íÖÐ¡£
-# Èç¹ûÊÇ¹«¿ªµÄÍ¼Æ¬ÔòÍ¼Æ¬Á´½ÓÊÇ¹Ì¶¨µÄ¡£Ë½ÓÐµÄÔòÍ¼Æ¬Á´½ÓÊÇ¶¯Ì¬Éú³ÉµÄ¡£
+# æ–‡ä»¶è¡¨
+# ä¸Šä¼ çš„å›¾ç‰‡ã€è§†é¢‘ç­‰æ–‡ä»¶è®°å½•åœ¨æ­¤è¡¨ä¸­ã€‚
+# å¦‚æžœæ˜¯å…¬å¼€çš„å›¾ç‰‡åˆ™å›¾ç‰‡é“¾æŽ¥æ˜¯å›ºå®šçš„ã€‚ç§æœ‰çš„åˆ™å›¾ç‰‡é“¾æŽ¥æ˜¯åŠ¨æ€ç”Ÿæˆçš„ã€‚
 DROP TABLE IF EXISTS ms_files;
 CREATE TABLE ms_files(
-	file_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Ö÷¼ü',
-	file_name CHAR(50) NOT NULL COMMENT 'ÎÄ¼þÃû³Æ',
-	file_type TINYINT(1) NOT NULL COMMENT 'ÎÄ¼þÀàÐÍ£º1-Í¼Æ¬¡¢2-ÆäËûÎÄ¼þ',
-	file_size INT(11) UNSIGNED NOT NULL COMMENT 'ÎÄ¼þ´óÐ¡¡£µ¥Î»£º(byte)',
-	file_md5 CHAR(32) NOT NULL COMMENT 'ÎÄ¼þmd5Öµ',
-	user_type TINYINT(1) NOT NULL COMMENT 'ÓÃ»§ÀàÐÍ£º1¹ÜÀíÔ±¡¢2ÆÕÍ¨ÓÃ»§',
-	user_id INT(11) UNSIGNED NOT NULL COMMENT 'ÓÃ»§ID',
-	status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '×´Ì¬£º0Ê§Ð§¡¢1ÓÐÐ§¡¢2É¾³ý',
-	created_time INT(11) UNSIGNED NOT NULL COMMENT '´´½¨Ê±¼ä',
+	file_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ä¸»é”®',
+	file_name CHAR(50) NOT NULL COMMENT 'æ–‡ä»¶åç§°',
+	file_type TINYINT(1) NOT NULL COMMENT 'æ–‡ä»¶ç±»åž‹ï¼š1-å›¾ç‰‡ã€2-å…¶ä»–æ–‡ä»¶',
+	file_size INT(11) UNSIGNED NOT NULL COMMENT 'æ–‡ä»¶å¤§å°ã€‚å•ä½ï¼š(byte)',
+	file_md5 CHAR(32) NOT NULL COMMENT 'æ–‡ä»¶md5å€¼',
+	user_type TINYINT(1) NOT NULL COMMENT 'ç”¨æˆ·ç±»åž‹ï¼š1ç®¡ç†å‘˜ã€2æ™®é€šç”¨æˆ·',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT 'ç”¨æˆ·ID',
+	status TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'çŠ¶æ€ï¼š0å¤±æ•ˆã€1æœ‰æ•ˆã€2åˆ é™¤',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
 	PRIMARY KEY(file_id)
-) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT 'ÎÄ¼þ±í';
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT 'æ–‡ä»¶è¡¨';
 
 
-# ¹ÜÀíÔ±±í
+# ç®¡ç†å‘˜è¡¨
 DROP TABLE IF EXISTS ms_admin;
 CREATE TABLE ms_admin(
-	admin_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '¹ÜÀíÔ±ID',
-	realname CHAR(20) NOT NULL COMMENT 'ÕæÊµÐÕÃû',
-	username CHAR(20) NOT NULL COMMENT 'ÕËºÅ',
-	password CHAR(32) NOT NULL COMMENT 'ÃÜÂë',
-	salt CHAR(6) NOT NULL COMMENT 'ÃÜÂëÑÎ',
-	mobilephone CHAR(11) NOT NULL DEFAULT '' COMMENT 'ÊÖ»úºÅÂë',
-	roleid SMALLINT(3) NOT NULL DEFAULT '0' COMMENT '½ÇÉ«ID',
-	lastlogintime INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '×îºóµÇÂ¼Ê±¼ä´Á',
-	status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '×´Ì¬£º0Ê§Ð§¡¢1ÓÐÐ§¡¢2É¾³ý',
-	created_time INT(11) UNSIGNED NOT NULL COMMENT '´´½¨Ê±¼ä',
+	admin_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ç®¡ç†å‘˜ID',
+	realname CHAR(20) NOT NULL COMMENT 'çœŸå®žå§“å',
+	username CHAR(20) NOT NULL COMMENT 'è´¦å·',
+	password CHAR(32) NOT NULL COMMENT 'å¯†ç ',
+	salt CHAR(6) NOT NULL COMMENT 'å¯†ç ç›',
+	mobilephone CHAR(11) NOT NULL DEFAULT '' COMMENT 'æ‰‹æœºå·ç ',
+	roleid SMALLINT(3) NOT NULL DEFAULT '0' COMMENT 'è§’è‰²ID',
+	lastlogintime INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'æœ€åŽç™»å½•æ—¶é—´æˆ³',
+	status TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'çŠ¶æ€ï¼š0å¤±æ•ˆã€1æœ‰æ•ˆã€2åˆ é™¤',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
 	PRIMARY KEY(admin_id),
 	KEY(username),
 	KEY(mobilephone)
-) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '¹ÜÀíÔ±±í';
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT 'ç®¡ç†å‘˜è¡¨';
 INSERT INTO ms_admin (admin_id, realname, username, password, salt, status, created_time, roleid)
-VALUES(1, '³¬¼¶¹ÜÀíÔ±', 'admin', 'c7935cc8ee50b752345290d8cf136827', 'abcdef', 1, unix_timestamp(now()), 1);
+VALUES(1, 'è¶…çº§ç®¡ç†å‘˜', 'admin', 'c7935cc8ee50b752345290d8cf136827', 'abcdef', 1, unix_timestamp(now()), 1);
 
 
-# ¹ÜÀíÔ±µÇÂ¼ÀúÊ·±í	
+# ç®¡ç†å‘˜ç™»å½•åŽ†å²è¡¨	
 DROP TABLE IF EXISTS ms_admin_login_history;
 CREATE TABLE `ms_admin_login_history` (
-  id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Ö÷¼ü',
-  admin_id INT(11) UNSIGNED NOT NULL COMMENT '¹ÜÀíÔ±ID',
-  browser_type CHAR(10) NOT NULL COMMENT 'ä¯ÀÀÆ÷ÀàÐÍ¡£tabletÆ½°å¡¢phoneÊÖ»ú¡¢computerµçÄÔ',
-  user_agent VARCHAR(200) NOT NULL COMMENT 'ä¯ÀÀÆ÷UA',
-  ip CHAR(15) NOT NULL COMMENT 'µÇÂ¼IP',
-  address VARCHAR(100) NOT NULL DEFAULT '' COMMENT 'IP¶ÔÓ¦µÄµØÖ·ÐÅÏ¢',
-  created_time INT(11) UNSIGNED NOT NULL COMMENT 'µÇÂ¼Ê±¼ä',
+  id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ä¸»é”®',
+  admin_id INT(11) UNSIGNED NOT NULL COMMENT 'ç®¡ç†å‘˜ID',
+  browser_type CHAR(10) NOT NULL COMMENT 'æµè§ˆå™¨ç±»åž‹ã€‚tabletå¹³æ¿ã€phoneæ‰‹æœºã€computerç”µè„‘',
+  user_agent VARCHAR(200) NOT NULL COMMENT 'æµè§ˆå™¨UA',
+  ip CHAR(15) NOT NULL COMMENT 'ç™»å½•IP',
+  address VARCHAR(100) NOT NULL DEFAULT '' COMMENT 'IPå¯¹åº”çš„åœ°å€ä¿¡æ¯',
+  created_time INT(11) UNSIGNED NOT NULL COMMENT 'ç™»å½•æ—¶é—´',
   PRIMARY KEY(id)
-) ENGINE=InnoDB DEFAULT CHARSET UTF8 COMMENT '¹ÜÀíÔ±µÇÂ¼ÀúÊ·±í';
+) ENGINE=InnoDB DEFAULT CHARSET UTF8 COMMENT 'ç®¡ç†å‘˜ç™»å½•åŽ†å²è¡¨';
 
 
-# ½ÇÉ«±í	
+# è§’è‰²è¡¨	
 DROP TABLE IF EXISTS ms_admin_role;
 CREATE TABLE ms_admin_role(
-	roleid INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '½ÇÉ«ID',
-	rolename CHAR(20) NOT NULL COMMENT '½ÇÉ«Ãû³Æ',
-	listorder SMALLINT(3) NOT NULL DEFAULT '0' COMMENT 'ÅÅÐò¡£Ð¡ÔÚÇ°¡£',
-	description CHAR(255) NOT NULL DEFAULT '' COMMENT '½ÇÉ«ËµÃ÷',
-	status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '×´Ì¬£º0Ê§Ð§¡¢1ÓÐÐ§¡¢2É¾³ý',
-	created_time INT(11) UNSIGNED NOT NULL COMMENT '´´½¨Ê±¼ä',
-	is_default TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'Ä¬ÈÏ½ÇÉ«ÓµÓÐ×î¸ßÈ¨ÏÞ¡£²»¿ÉÉ¾³ý´ËÄ¬ÈÏ½ÇÉ«¡£³¬¼¶¹ÜÀíÔ±Ö»ÄÜÊôÓÚ´Ë½ÇÉ«£¬ÆäËûÓÃ»§²»¿É·ÖÅä´Ë½ÇÉ«',
+	roleid INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'è§’è‰²ID',
+	rolename CHAR(20) NOT NULL COMMENT 'è§’è‰²åç§°',
+	listorder SMALLINT(3) NOT NULL DEFAULT '0' COMMENT 'æŽ’åºã€‚å°åœ¨å‰ã€‚',
+	description CHAR(255) NOT NULL DEFAULT '' COMMENT 'è§’è‰²è¯´æ˜Ž',
+	status TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'çŠ¶æ€ï¼š0å¤±æ•ˆã€1æœ‰æ•ˆã€2åˆ é™¤',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
+	is_default TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'é»˜è®¤è§’è‰²æ‹¥æœ‰æœ€é«˜æƒé™ã€‚ä¸å¯åˆ é™¤æ­¤é»˜è®¤è§’è‰²ã€‚è¶…çº§ç®¡ç†å‘˜åªèƒ½å±žäºŽæ­¤è§’è‰²ï¼Œå…¶ä»–ç”¨æˆ·ä¸å¯åˆ†é…æ­¤è§’è‰²',
 	PRIMARY KEY(roleid)
-) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '½ÇÉ«±í';
-INSERT INTO ms_admin_role (roleid, rolename, status, is_default, created_time) VALUES(1, '³¬¼¶¹ÜÀíÔ±', 1, 1, unix_timestamp(now()));
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT 'è§’è‰²è¡¨';
+INSERT INTO ms_admin_role (roleid, rolename, status, is_default, created_time) VALUES(1, 'è¶…çº§ç®¡ç†å‘˜', 1, 1, unix_timestamp(now()));
 
 
-# ½ÇÉ«È¨ÏÞ±í	
+# è§’è‰²æƒé™è¡¨	
 DROP TABLE IF EXISTS ms_admin_role_priv;
 CREATE TABLE `ms_admin_role_priv` (
-  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Ö÷¼ü',
-  `roleid` SMALLINT(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT '½ÇÉ«ID',
-  `menu_id` INT(11) UNSIGNED NOT NULL COMMENT '²Ëµ¥ID',
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ä¸»é”®',
+  `roleid` SMALLINT(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'è§’è‰²ID',
+  `menu_id` INT(11) UNSIGNED NOT NULL COMMENT 'èœå•ID',
   PRIMARY KEY(id),
   KEY(roleid)
-) ENGINE=InnoDB DEFAULT CHARSET UTF8 COMMENT '½ÇÉ«È¨ÏÞ±í';
+) ENGINE=InnoDB DEFAULT CHARSET UTF8 COMMENT 'è§’è‰²æƒé™è¡¨';
 
-# ÕÒ»ØÃÜÂë¼ÇÂ¼±í
+# æ‰¾å›žå¯†ç è®°å½•è¡¨
 DROP TABLE IF EXISTS ms_find_pwd;
 CREATE TABLE ms_find_pwd(
-	id INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Ö÷¼üID',
-	user_id INT(11) UNSIGNED NOT NULL COMMENT 'ÓÃ»§ID',
-	find_type TINYINT(1) NOT NULL COMMENT 'ÕÒ»ØÃÜÂëÀàÐÍ£º1ÊÖ»úºÅÕÒ»Ø¡¢2ÓÊÏäÕÒ»Ø',
-	to_account CHAR(50) NOT NULL COMMENT 'ÊÖ»ú»òÓÊÏä»òÆäËû',
-	code CHAR(6) NOT NULL COMMENT 'ÑéÖ¤Âë',
-	check_times SMALLINT(3) NOT NULL DEFAULT '0' COMMENT 'ÑéÖ¤´ÎÊý',
-	is_ok TINYINT(1) NOT NULL DEFAULT '0' COMMENT '×îºóÒ»´Î·ñÑéÖ¤Í¨¹ý±ê¼Ç¡£0Î´Ê¹ÓÃ¡¢1ÒÑÍ¨¹ýÑéÖ¤¡¢2Î´ÑéÖ¤Í¨¹ý',
-	ip CHAR(15) NOT NULL COMMENT 'IPµØÖ·',
-	created_time INT(11) UNSIGNED NOT NULL COMMENT '´´½¨Ê±¼ä',
-	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ÐÞ¸ÄÊ±¼ä',
+	id INT(11) NOT NULL AUTO_INCREMENT COMMENT 'ä¸»é”®ID',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT 'ç”¨æˆ·ID',
+	find_type TINYINT(1) NOT NULL COMMENT 'æ‰¾å›žå¯†ç ç±»åž‹ï¼š1æ‰‹æœºå·æ‰¾å›žã€2é‚®ç®±æ‰¾å›ž',
+	to_account CHAR(50) NOT NULL COMMENT 'æ‰‹æœºæˆ–é‚®ç®±æˆ–å…¶ä»–',
+	code CHAR(6) NOT NULL COMMENT 'éªŒè¯ç ',
+	check_times SMALLINT(3) NOT NULL DEFAULT '0' COMMENT 'éªŒè¯æ¬¡æ•°',
+	is_ok TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'æœ€åŽä¸€æ¬¡å¦éªŒè¯é€šè¿‡æ ‡è®°ã€‚0æœªä½¿ç”¨ã€1å·²é€šè¿‡éªŒè¯ã€2æœªéªŒè¯é€šè¿‡',
+	ip CHAR(15) NOT NULL COMMENT 'IPåœ°å€',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ä¿®æ”¹æ—¶é—´',
 	PRIMARY KEY(id),
 	KEY(find_type, to_account)
-) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT 'ÕÒ»ØÃÜÂë¼ÇÂ¼±í';
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT 'æ‰¾å›žå¯†ç è®°å½•è¡¨';
 
-# ÎÄÕÂ±í
+# æ–‡ç« è¡¨
 DROP TABLE IF EXISTS ms_news;
 CREATE TABLE `ms_news` (
-	news_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ÎÄÕÂID¡¢Ö÷¼ü',
-	cat_id INT(11) UNSIGNED NOT NULL COMMENT '·ÖÀàID¡£¶ÔÓ¦ms_category.cat_id',
-	title CHAR(50) NOT NULL COMMENT 'ÎÄÕÂ±êÌâ',
-	code CHAR(20) NOT NULL COMMENT 'ÎÄÕÂ±àÂë(Ö»ÔÊÐí×ÖÄ¸Êý×ÖÏÂ»®ÏßºáÏß)',
-	intro CHAR(250) NOT NULL COMMENT 'ÎÄÕÂ¼ò½é¡£Ò²ÊÇSEOÖÐµÄdescription',
-	keywords CHAR(50) NOT NULL DEFAULT '' COMMENT 'ÎÄÕÂ¹Ø¼ü´Ê¡£Ò²ÊÇSEOÖÐµÄkeywords',
-	image_url CHAR(100) NOT NULL DEFAULT '' COMMENT 'ÎÄÕÂÁÐ±íÍ¼Æ¬',
-	source CHAR(20) NOT NULL DEFAULT '' COMMENT 'ÎÄÕÂÀ´Ô´',
-	display TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'ÎÄÕÂÊÇ·ñÏÔÊ¾¡£1ÏÔÊ¾¡¢0Òþ²Ø',
-	status TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'ÎÄÕÂ×´Ì¬£º0ÎÞÐ§¡¢1Õý³£¡¢2É¾³ý',
-	listorder SMALLINT(6) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ÅÅÐò¡£Ð¡µ½´óÅÅÐò¡£',
-	hits INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ÎÄÕÂ·ÃÎÊÁ¿',
-	created_by INT(11) UNSIGNED NOT NULL COMMENT '´´½¨ÈË',
-	created_time INT(11) UNSIGNED NOT NULL COMMENT '´´½¨Ê±¼ä',
-	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ÐÞ¸ÄÈË',
-	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ÐÞ¸ÄÊ±¼ä',
+	news_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'æ–‡ç« IDã€ä¸»é”®',
+	cat_id INT(11) UNSIGNED NOT NULL COMMENT 'åˆ†ç±»IDã€‚å¯¹åº”ms_category.cat_id',
+	title CHAR(50) NOT NULL COMMENT 'æ–‡ç« æ ‡é¢˜',
+	code CHAR(20) NOT NULL COMMENT 'æ–‡ç« ç¼–ç (åªå…è®¸å­—æ¯æ•°å­—ä¸‹åˆ’çº¿æ¨ªçº¿)',
+	intro CHAR(250) NOT NULL COMMENT 'æ–‡ç« ç®€ä»‹ã€‚ä¹Ÿæ˜¯SEOä¸­çš„description',
+	keywords CHAR(50) NOT NULL DEFAULT '' COMMENT 'æ–‡ç« å…³é”®è¯ã€‚ä¹Ÿæ˜¯SEOä¸­çš„keywords',
+	image_url CHAR(100) NOT NULL DEFAULT '' COMMENT 'æ–‡ç« åˆ—è¡¨å›¾ç‰‡',
+	source CHAR(20) NOT NULL DEFAULT '' COMMENT 'æ–‡ç« æ¥æº',
+	display TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'æ–‡ç« æ˜¯å¦æ˜¾ç¤ºã€‚1æ˜¾ç¤ºã€0éšè—',
+	status TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'æ–‡ç« çŠ¶æ€ï¼š0æ— æ•ˆã€1æ­£å¸¸ã€2åˆ é™¤',
+	listorder SMALLINT(6) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'æŽ’åºã€‚å°åˆ°å¤§æŽ’åºã€‚',
+	hits INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'æ–‡ç« è®¿é—®é‡',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT 'åˆ›å»ºäºº',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ä¿®æ”¹äºº',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ä¿®æ”¹æ—¶é—´',
 	PRIMARY KEY(news_id),
 	KEY(created_time),
 	KEY(created_by)
-) ENGINE=InnoDB DEFAULT CHARSET UTF8 COMMENT 'ÎÄÕÂ±í';
+) ENGINE=InnoDB DEFAULT CHARSET UTF8 COMMENT 'æ–‡ç« è¡¨';
 
-# ÎÄÕÂ¸±±í
+# æ–‡ç« å‰¯è¡¨
 DROP TABLE IF EXISTS ms_news_data;
 CREATE TABLE `ms_news_data` (
-	news_id INT(11) UNSIGNED NOT NULL COMMENT 'ÎÄÕÂID',
-	content TEXT COMMENT 'ÎÄÕÂÄÚÈÝ',
+	news_id INT(11) UNSIGNED NOT NULL COMMENT 'æ–‡ç« ID',
+	content TEXT COMMENT 'æ–‡ç« å†…å®¹',
 	PRIMARY KEY(news_id)
-) ENGINE=InnoDB DEFAULT CHARSET UTF8 COMMENT 'ÎÄÕÂ¸±±í';
+) ENGINE=InnoDB DEFAULT CHARSET UTF8 COMMENT 'æ–‡ç« å‰¯è¡¨';
 
 
-# ÓÑÇéÁ´½Ó±í
-# Í¨¹ýÒ»¸öURLÀ´Í³Ò»Ìø×ªÕâÐ©ÓÑÇéÁ´½Ó¡£·½±ãÍ³¼Æ¡£
+# å‹æƒ…é“¾æŽ¥è¡¨
+# é€šè¿‡ä¸€ä¸ªURLæ¥ç»Ÿä¸€è·³è½¬è¿™äº›å‹æƒ…é“¾æŽ¥ã€‚æ–¹ä¾¿ç»Ÿè®¡ã€‚
 DROP TABLE IF EXISTS ms_link;
 CREATE TABLE `ms_link` (
-	link_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Ö÷¼ü',
-	link_name VARCHAR(50) NOT NULL COMMENT 'ÓÑÇéÁ´½ÓÃû³Æ',
-	link_url VARCHAR(100) NOT NULL COMMENT 'ÓÑÇéÁ´½ÓURL',
-	cat_id INT(11) UNSIGNED NOT NULL COMMENT 'ÓÑÇéÁ´½Ó·ÖÀàID¡£¶ÔÓ¦ms_category.cat_id',
-	image_url VARCHAR(100) NOT NULL DEFAULT '' COMMENT 'ÓÑÇéÁ´½ÓÍ¼Æ¬',
-	display TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'ÊÇ·ñÏÔÊ¾¡£1ÏÔÊ¾¡¢0Òþ²Ø',
-	status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '×´Ì¬£º0ÎÞÐ§¡¢1Õý³£¡¢2É¾³ý',
-	listorder SMALLINT(6) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ÅÅÐò¡£Ð¡µ½´óÅÅÐò¡£',
-	hits INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'URLµã»÷Á¿',
-	created_by INT(11) UNSIGNED NOT NULL COMMENT '´´½¨ÈË',
-	created_time INT(11) UNSIGNED NOT NULL COMMENT '´´½¨Ê±¼ä',
-	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ÐÞ¸ÄÈË',
-	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ÐÞ¸ÄÊ±¼ä',
+	link_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ä¸»é”®',
+	link_name VARCHAR(50) NOT NULL COMMENT 'å‹æƒ…é“¾æŽ¥åç§°',
+	link_url VARCHAR(100) NOT NULL COMMENT 'å‹æƒ…é“¾æŽ¥URL',
+	cat_id INT(11) UNSIGNED NOT NULL COMMENT 'å‹æƒ…é“¾æŽ¥åˆ†ç±»IDã€‚å¯¹åº”ms_category.cat_id',
+	image_url VARCHAR(100) NOT NULL DEFAULT '' COMMENT 'å‹æƒ…é“¾æŽ¥å›¾ç‰‡',
+	display TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'æ˜¯å¦æ˜¾ç¤ºã€‚1æ˜¾ç¤ºã€0éšè—',
+	status TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'çŠ¶æ€ï¼š0æ— æ•ˆã€1æ­£å¸¸ã€2åˆ é™¤',
+	listorder SMALLINT(6) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'æŽ’åºã€‚å°åˆ°å¤§æŽ’åºã€‚',
+	hits INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'URLç‚¹å‡»é‡',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT 'åˆ›å»ºäºº',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ä¿®æ”¹äºº',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ä¿®æ”¹æ—¶é—´',
 	PRIMARY KEY(link_id)
-) ENGINE=InnoDB DEFAULT CHARSET UTF8 COMMENT 'ÓÑÇéÁ´½Ó±í';
+) ENGINE=InnoDB DEFAULT CHARSET UTF8 COMMENT 'å‹æƒ…é“¾æŽ¥è¡¨';
 
 
-# ¹ã¸æÎ»ÖÃ½Ó±í
+# å¹¿å‘Šä½ç½®æŽ¥è¡¨
 DROP TABLE IF EXISTS ms_ad_position;
 CREATE TABLE `ms_ad_position` (
-	pos_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Ö÷¼ü',
-	pos_name VARCHAR(50) NOT NULL COMMENT '¹ã¸æÎ»ÖÃÃû³Æ',
-	pos_code VARCHAR(50) NOT NULL COMMENT '¹ã¸æÎ»ÖÃ±àÂë¡£Í¨¹ý±àÂëÀ´¶ÁÈ¡¹ã¸æÊý¾Ý',
-	pos_ad_count SMALLINT(5) NOT NULL COMMENT '¸Ã¹ã¸æÎ»ÖÃÏÔÊ¾¿ÉÕ¹Ê¾¹ã¸æµÄÊýÁ¿',
-	status TINYINT(1) NOT NULL COMMENT '×´Ì¬£º0ÎÞÐ§¡¢1Õý³£¡¢2É¾³ý',
-	created_by INT(11) UNSIGNED NOT NULL COMMENT '´´½¨ÈË',
-	created_time INT(11) UNSIGNED NOT NULL COMMENT '´´½¨Ê±¼ä',
-	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ÐÞ¸ÄÈË',
-	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ÐÞ¸ÄÊ±¼ä',
+	pos_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ä¸»é”®',
+	pos_name VARCHAR(50) NOT NULL COMMENT 'å¹¿å‘Šä½ç½®åç§°',
+	pos_code VARCHAR(50) NOT NULL COMMENT 'å¹¿å‘Šä½ç½®ç¼–ç ã€‚é€šè¿‡ç¼–ç æ¥è¯»å–å¹¿å‘Šæ•°æ®',
+	pos_ad_count SMALLINT(5) NOT NULL COMMENT 'è¯¥å¹¿å‘Šä½ç½®æ˜¾ç¤ºå¯å±•ç¤ºå¹¿å‘Šçš„æ•°é‡',
+	status TINYINT(1) NOT NULL COMMENT 'çŠ¶æ€ï¼š0æ— æ•ˆã€1æ­£å¸¸ã€2åˆ é™¤',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT 'åˆ›å»ºäºº',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ä¿®æ”¹äºº',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ä¿®æ”¹æ—¶é—´',
 	PRIMARY KEY(pos_id)
-) ENGINE=InnoDB DEFAULT CHARSET UTF8 COMMENT '¹ã¸æÎ»ÖÃ½Ó±í';
+) ENGINE=InnoDB DEFAULT CHARSET UTF8 COMMENT 'å¹¿å‘Šä½ç½®æŽ¥è¡¨';
 
-# ¹ã¸æ±í
+# å¹¿å‘Šè¡¨
 DROP TABLE IF EXISTS ms_ad;
 CREATE TABLE `ms_ad` (
-	ad_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Ö÷¼ü',
-	ad_name VARCHAR(50) NOT NULL COMMENT '¹ã¸æÃû³Æ',
-	pos_id INT(11) UNSIGNED NOT NULL COMMENT '¹ã¸æÎ»ÖÃ¡£¶ÔÓ¦ms_ad_postion.pos_id',
-	ad_image_url VARCHAR(100) NOT NULL COMMENT '¹ã¸æÍ¼Æ¬',
-	ad_url VARCHAR(100) NOT NULL COMMENT '¹ã¸æÍ¼Æ¬URLÌø×ªµØÖ·',
-	start_time INT(11) UNSIGNED NOT NULL COMMENT '¹ã¸æÉúÐ§Ê±¼ä',
-	end_time INT(11) UNSIGNED NOT NULL COMMENT '¹ã¸æÊ§Ð§Ê±¼ä',
-	display TINYINT(1) NOT NULL DEFAULT '1' COMMENT 'ÏÔÊ¾×´Ì¬£º1ÏÔÊ¾¡¢0Òþ²Ø',
-	status TINYINT(1) NOT NULL COMMENT '×´Ì¬£º0ÎÞÐ§¡¢1Õý³£¡¢2É¾³ý',
-	listorder SMALLINT(6) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ÅÅÐò¡£Ð¡µ½´óÅÅÐò¡£',
-	remark VARCHAR(255) NOT NULL DEFAULT '' COMMENT '±¸×¢',
-	created_by INT(11) UNSIGNED NOT NULL COMMENT '´´½¨ÈË',
-	created_time INT(11) UNSIGNED NOT NULL COMMENT '´´½¨Ê±¼ä',
-	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ÐÞ¸ÄÈË',
-	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ÐÞ¸ÄÊ±¼ä',
+	ad_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ä¸»é”®',
+	ad_name VARCHAR(50) NOT NULL COMMENT 'å¹¿å‘Šåç§°',
+	pos_id INT(11) UNSIGNED NOT NULL COMMENT 'å¹¿å‘Šä½ç½®ã€‚å¯¹åº”ms_ad_postion.pos_id',
+	ad_image_url VARCHAR(100) NOT NULL COMMENT 'å¹¿å‘Šå›¾ç‰‡',
+	ad_url VARCHAR(100) NOT NULL COMMENT 'å¹¿å‘Šå›¾ç‰‡URLè·³è½¬åœ°å€',
+	start_time INT(11) UNSIGNED NOT NULL COMMENT 'å¹¿å‘Šç”Ÿæ•ˆæ—¶é—´',
+	end_time INT(11) UNSIGNED NOT NULL COMMENT 'å¹¿å‘Šå¤±æ•ˆæ—¶é—´',
+	display TINYINT(1) NOT NULL DEFAULT '1' COMMENT 'æ˜¾ç¤ºçŠ¶æ€ï¼š1æ˜¾ç¤ºã€0éšè—',
+	status TINYINT(1) NOT NULL COMMENT 'çŠ¶æ€ï¼š0æ— æ•ˆã€1æ­£å¸¸ã€2åˆ é™¤',
+	listorder SMALLINT(6) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'æŽ’åºã€‚å°åˆ°å¤§æŽ’åºã€‚',
+	remark VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'å¤‡æ³¨',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT 'åˆ›å»ºäºº',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ä¿®æ”¹äºº',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ä¿®æ”¹æ—¶é—´',
 	PRIMARY KEY(ad_id)
-) ENGINE=InnoDB DEFAULT CHARSET UTF8 COMMENT '¹ã¸æ±í';
+) ENGINE=InnoDB DEFAULT CHARSET UTF8 COMMENT 'å¹¿å‘Šè¡¨';
 
 
-# ·ÖÀà±í
-# ËùÓÐ¸¸·ÖÀàIDÎª0µÄ·ÖÀà£¬¶¼ÓÐÒ»¸ö¹²Í¬µÄÐéÄâ¶¥¼¶¸¸ÀàIDÎª0¡£
+# åˆ†ç±»è¡¨
+# æ‰€æœ‰çˆ¶åˆ†ç±»IDä¸º0çš„åˆ†ç±»ï¼Œéƒ½æœ‰ä¸€ä¸ªå…±åŒçš„è™šæ‹Ÿé¡¶çº§çˆ¶ç±»IDä¸º0ã€‚
 DROP TABLE IF EXISTS `ms_category`;
 CREATE TABLE ms_category(
-	cat_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '·ÖÀàID',
-	cat_name VARCHAR(50) NOT NULL COMMENT '·ÖÀàÃû³Æ',
-	cat_type SMALLINT(3) NOT NULL COMMENT '·ÖÀàÀàÐÍ¡£¼ûcategory_type_list×Öµä¡£',
-	parentid INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '¸¸·ÖÀàID',
-	lv SMALLINT(3) NOT NULL COMMENT '²Ëµ¥²ã¼¶',
-	cat_code VARCHAR(50) NOT NULL COMMENT '·ÖÀàcode±à',
-	is_out_url TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'ÊÇ·ñÍâ²¿Á´½Ó£º1ÊÇ¡¢0·ñ',
-	out_url VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'Íâ²¿Á´½ÓµØÖ·',
-	display TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'ÏÔÊ¾×´Ì¬£º1ÊÇ¡¢0·ñ',
-	status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '×´Ì¬£º0ÎÞÐ§¡¢1Õý³£¡¢2É¾³ý',
-	listorder SMALLINT(5) NOT NULL DEFAULT '0' COMMENT 'ÅÅÐòÖµ¡£Ð¡µ½´óÅÅÁÐ¡£',
-	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ÐÞ¸ÄÈË',
-	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ÐÞ¸ÄÊ±¼ä´Á',
-	created_time INT(11) UNSIGNED NOT NULL COMMENT '´´½¨Ê±¼ä´Á',
-	created_by INT(11) UNSIGNED NOT NULL COMMENT '¹ÜÀíÔ±ÕËºÅID',
+	cat_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'åˆ†ç±»ID',
+	cat_name VARCHAR(50) NOT NULL COMMENT 'åˆ†ç±»åç§°',
+	cat_type SMALLINT(3) NOT NULL COMMENT 'åˆ†ç±»ç±»åž‹ã€‚è§category_type_listå­—å…¸ã€‚',
+	parentid INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'çˆ¶åˆ†ç±»ID',
+	lv SMALLINT(3) NOT NULL COMMENT 'èœå•å±‚çº§',
+	cat_code VARCHAR(50) NOT NULL COMMENT 'åˆ†ç±»codeç¼–',
+	is_out_url TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'æ˜¯å¦å¤–éƒ¨é“¾æŽ¥ï¼š1æ˜¯ã€0å¦',
+	out_url VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'å¤–éƒ¨é“¾æŽ¥åœ°å€',
+	display TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'æ˜¾ç¤ºçŠ¶æ€ï¼š1æ˜¯ã€0å¦',
+	status TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'çŠ¶æ€ï¼š0æ— æ•ˆã€1æ­£å¸¸ã€2åˆ é™¤',
+	listorder SMALLINT(5) NOT NULL DEFAULT '0' COMMENT 'æŽ’åºå€¼ã€‚å°åˆ°å¤§æŽ’åˆ—ã€‚',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ä¿®æ”¹äºº',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'ä¿®æ”¹æ—¶é—´æˆ³',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´æˆ³',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT 'ç®¡ç†å‘˜è´¦å·ID',
 	PRIMARY KEY(cat_id),
 	KEY(cat_code)
-) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '·ÖÀà±í';
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT 'åˆ†ç±»è¡¨';
 
 
-# ºóÌ¨²Ëµ¥±í
+# åŽå°èœå•è¡¨
 DROP TABLE IF EXISTS ms_menu;
 CREATE TABLE `ms_menu` (
   `menu_id` SMALLINT(6) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -342,167 +294,107 @@ CREATE TABLE `ms_menu` (
   KEY `listorder` (`listorder`),
   KEY `parentid` (`parentid`),
   KEY `module` (`m`,`c`,`a`)
-) ENGINE=InnoDB DEFAULT CHARSET UTF8 COMMENT 'ºóÌ¨²Ëµ¥±í';
+) ENGINE=InnoDB DEFAULT CHARSET UTF8 COMMENT 'åŽå°èœå•è¡¨';
 
 
 INSERT INTO `ms_menu` (`menu_id`, `name`, `parentid`, `m`, `c`, `a`, `data`, `listorder`, `display`)
 VALUES
 
-(1000, '³£ÓÃ¹¦ÄÜ', 0,'','','','',0,'1'),
-(1001, '³£ÓÃ¹¦ÄÜ', 1000,'','','','',0,'1'),
-(1002, 'ÐÞ¸ÄÃÜÂë', 1001, 'Index','Admin','editPwd','',0,'1'),
-(1003, 'µÇÂ¼ÀúÊ·', 1001, 'Index','Admin','loginHistory','',0,'1'),
-(1004, '¹ÜÀíºóÌ¨Ê×Ò³', 1001, 'Index','Index','Index','',0,'0'),
-(1005, '¹ÜÀíºóÌ¨Ajax»ñÈ¡²Ëµ¥', 1001, 'Index','Index','leftMenu','',0,'0'),
-(1006, '¹ÜÀíºóÌ¨ÓÒ²àÄ¬ÈÏÒ³', 1001, 'Index','Index','right','',0,'0'),
-(1007, '¹ÜÀíºóÌ¨Ãæ°üÐ¼', 1001, 'Index','Index','arrow','',0,'0'),
-(1008, 'ÎÄ¼þÉÏ´«', '1001', 'Index', 'Index', 'upload', '', '0', '0'),
-(1009, 'Éú³ÉÊ×Ò³', '1001', 'Index', 'Index', 'createHomePage', '', '0', '1'),
+(1000, 'å¸¸ç”¨åŠŸèƒ½', 0,'','','','',0,'1'),
+(1001, 'å¸¸ç”¨åŠŸèƒ½', 1000,'','','','',0,'1'),
+(1002, 'ä¿®æ”¹å¯†ç ', 1001, 'Index','Admin','editPwd','',0,'1'),
+(1003, 'ç™»å½•åŽ†å²', 1001, 'Index','Admin','loginHistory','',0,'1'),
+(1004, 'ç®¡ç†åŽå°é¦–é¡µ', 1001, 'Index','Index','Index','',0,'0'),
+(1005, 'ç®¡ç†åŽå°AjaxèŽ·å–èœå•', 1001, 'Index','Index','leftMenu','',0,'0'),
+(1006, 'ç®¡ç†åŽå°å³ä¾§é»˜è®¤é¡µ', 1001, 'Index','Index','right','',0,'0'),
+(1007, 'ç®¡ç†åŽå°é¢åŒ…å±‘', 1001, 'Index','Index','arrow','',0,'0'),
+(1008, 'æ–‡ä»¶ä¸Šä¼ ', '1001', 'Index', 'Index', 'upload', '', '0', '0'),
+(1009, 'ç”Ÿæˆé¦–é¡µ', '1001', 'Index', 'Index', 'createHomePage', '', '0', '1'),
 
-(2000, 'ÏµÍ³ÉèÖÃ',0,'','','','',0,'1'),
-(2001, 'ÏµÍ³ÅäÖÃ',2000,'','','','',0,'1'),
-(2002, '×Öµä¹ÜÀí',2001,'Index','Dict','index','',0,'1'),
-(2003, 'Ìí¼Ó×ÖµäÀàÐÍ',2001,'Index','Dict','addType','',0,'0'),
-(2004, '±à¼­×ÖµäÀàÐÍ',2001,'Index','Dict','editType','',0,'0'),
-(2005, 'É¾³ý×ÖµäÀàÐÍ',2001,'Index','Dict','deleteType','',0,'0'),
-(2006, '×ÖµäÁÐ±í',2001,'Index','Dict','dict','',0,'0'),
-(2007, 'É¾³ý×Öµä',2001,'Index','Dict','delete','',0,'0'),
-(2008, 'Ìí¼Ó×Öµä',2001,'Index','Dict','add','',0,'0'),
-(2009, '¸üÐÂ×Öµä',2001,'Index','Dict','edit','',0,'0'),
-(2010, '×ÖµäÀàÐÍÅÅÐò',2001,'Index','Dict','sortType','',0,'0'),
-(2011, '×ÖµäÅÅÐò',2001,'Index','Dict','sortDict','',0,'0'),
-(2012, '×Öµä»º´æÇå³ý',2001,'Index','Dict','ClearCache','',0,'0'),
-(2013, 'ÅäÖÃ¹ÜÀí', 2001, 'Index','Config','index','',0,'1'),
-(2014, 'Ìí¼ÓÅäÖÃ', 2001, 'Index','Config','add','',0,'0'),
-(2015, '±à¼­ÅäÖÃ', 2001, 'Index','Config','edit','',0,'0'),
-(2016, 'É¾³ýÅäÖÃ', 2001, 'Index','Config','delete','',0,'0'),
-(2017, 'ÅäÖÃÅÅÐò', 2001, 'Index','Config','sort','',0,'0'),
-(2018, 'ÅäÖÃ»º´æÇå³ý', 2001, 'Index','Config','ClearCache','',0,'0'),
-(2019, '²Ëµ¥ÁÐ±í', 2001, 'Index','Menu','index','',0,'1'),
-(2020, 'Ìí¼Ó²Ëµ¥', 2001, 'Index','Menu','add','',0,'0'),
-(2021, '±à¼­²Ëµ¥', 2001, 'Index','Menu','edit','',0,'0'),
-(2022, 'É¾³ý²Ëµ¥', 2001, 'Index','Menu','delete','',0,'0'),
-(2023, '²Ëµ¥ÅÅÐò', 2001, 'Index','Menu','sort','',0,'0'),
+(2000, 'ç³»ç»Ÿè®¾ç½®',0,'','','','',0,'1'),
+(2001, 'ç³»ç»Ÿé…ç½®',2000,'','','','',0,'1'),
+(2002, 'å­—å…¸ç®¡ç†',2001,'Index','Dict','dict-list','',0,'1'),
+(2003, 'æ·»åŠ å­—å…¸ç±»åž‹',2001,'Index','Dict','dict-type-add','',0,'0'),
+(2004, 'ç¼–è¾‘å­—å…¸ç±»åž‹',2001,'Index','Dict','dict-type-edit','',0,'0'),
+(2005, 'åˆ é™¤å­—å…¸ç±»åž‹',2001,'Index','Dict','dict-type-delete','',0,'0'),
+(2006, 'å­—å…¸åˆ—è¡¨',2001,'Index','Dict','dict-list','',0,'0'),
+(2007, 'åˆ é™¤å­—å…¸',2001,'Index','Dict','dict-delete','',0,'0'),
+(2008, 'æ·»åŠ å­—å…¸',2001,'Index','Dict','dict-add','',0,'0'),
+(2009, 'æ›´æ–°å­—å…¸',2001,'Index','Dict','dict-edit','',0,'0'),
+(2010, 'å­—å…¸ç±»åž‹æŽ’åº',2001,'Index','Dict','sortType','',0,'0'),
+(2011, 'å­—å…¸æŽ’åº',2001,'Index','Dict','sortDict','',0,'0'),
+(2012, 'å­—å…¸ç¼“å­˜æ¸…é™¤',2001,'Index','Dict','ClearCache','',0,'0'),
+(2019, 'èœå•åˆ—è¡¨', 2001, 'Index','Menu','index','',0,'1'),
+(2020, 'æ·»åŠ èœå•', 2001, 'Index','Menu','add','',0,'0'),
+(2021, 'ç¼–è¾‘èœå•', 2001, 'Index','Menu','edit','',0,'0'),
+(2022, 'åˆ é™¤èœå•', 2001, 'Index','Menu','delete','',0,'0'),
+(2023, 'èœå•æŽ’åº', 2001, 'Index','Menu','sort','',0,'0'),
 
-(2200, 'Ãô¸Ð´Ê¹ÜÀí', 2000,'Index','Sensitive','','',0,'1'),
-(2201, 'Ãô¸Ð´ÊÁÐ±í', 2200,'Index','Sensitive','index','',0,'1'),
-(2202, 'Ìí¼ÓÃô¸Ð´Ê', 2200,'Index','Sensitive','add','',0,'0'),
-(2203, '¸üÐÂÃô¸Ð´Ê', 2200,'Index','Sensitive','edit','',0,'0'),
-(2204, 'Ãô¸Ð´ÊÉ¾³ý', 2200,'Index','Sensitive','delete','',0,'0'),
+(2400, 'åœ°åŒºç®¡ç†', 2000, 'Index','District','','',0,'1'),
+(2401, 'æ·»åŠ åœ°åŒº', 2400, 'Index','District','add','',0,'0'),
+(2402, 'ç¼–è¾‘åœ°åŒº', 2400, 'Index','District','edit','',0,'0'),
+(2403, 'åˆ é™¤åœ°åŒº', 2400, 'Index','District','delete','',0,'0'),
+(2404, 'åœ°åŒºæŽ’åº', 2400, 'Index','District','sort','',0,'0'),
+(2405, 'åœ°åŒºåˆ—è¡¨', 2400,'Index','District','list','',0,'1'),
+(2406, 'åˆ›å»ºåœ°åŒºJSONæ–‡ä»¶', 2400,'Index','District','create-json-file','',0,'0'),
 
-(2300,'IP½ûÖ¹', 2000,'Index','Ip','','',0,'1'),
-(2301,'±»½ûIPÁÐ±í',2300,'Index','Ip','index','',0,'1'),
-(2302,'Ìí¼ÓIP',2300,'Index','Ip','add','',0,'0'),
-(2303,'É¾³ýIP',2300,'Index','Ip','delete','',0,'0'),
+(2500, 'æ—¥å¿—ç®¡ç†', 2000,'Index','Log','','',0,'1'),
+(2501, 'æ—¥å¿—æŸ¥çœ‹', 2500,'Index','Log','index','',0,'1'),
+(2502, 'æ—¥å¿—ä¸‹è½½', 2500,'Index','Log','download','',0,'0'),
+(2503, 'æ—¥å¿—æ¸…ç©º', 2500,'Index','Log','empty','',0,'0'),
 
-(2400, 'Ê¡ÊÐÇø¹ÜÀí', 2000, 'Index','District','','',0,'1'),
-(2401, 'Ìí¼ÓÊ¡ÊÐÇø', 2400, 'Index','District','add','',0,'0'),
-(2402, '±à¼­Ê¡ÊÐÇø', 2400, 'Index','District','edit','',0,'0'),
-(2403, 'É¾³ýÊ¡ÊÐÇø', 2400, 'Index','District','delete','',0,'0'),
-(2404, 'Ê¡ÊÐÇøÅÅÐò', 2400, 'Index','District','sort','',0,'0'),
-(2405, 'Ê¡ÊÐÇøÁÐ±í', 2400,'Index','District','index','',0,'1'),
-(2406, '´´½¨Ê¡ÊÐÇøJSONÎÄ¼þ', 2400,'Index','District','createJsonFile','',0,'0'),
-
-(2500, 'ÈÕÖ¾¹ÜÀí', 2000,'Index','Log','','',0,'1'),
-(2501, 'ÈÕÖ¾²é¿´', 2500,'Index','Log','index','',0,'1'),
-
-(2700, 'ÎÄ¼þ¹ÜÀí', 2000, 'Index','File','','',0,'1'),
-(2701, 'ÎÄ¼þÁÐ±í', 2700, 'Index','File','index','',0,'1'),
-(2702, '¸üÐÂÎÄ¼þ', 2700, 'Index','File','edit','',0,'0'),
-(2703, 'Ìí¼ÓÎÄ¼þ', 2700, 'Index','File','add','',0,'0'),
-(2704, 'É¾³ýÎÄ¼þ', 2700, 'Index','File','delete','',0,'0'),
+(2700, 'æ–‡ä»¶ç®¡ç†', 2000, 'Index','File','','',0,'1'),
+(2701, 'æ–‡ä»¶åˆ—è¡¨', 2700, 'Index','File','index','',0,'1'),
+(2702, 'åˆ é™¤æ–‡ä»¶', 2700, 'Index','File','delete','',0,'0'),
+(2703, 'åˆ é™¤æ–‡ä»¶', 2700, 'Index','File','download','',0,'0'),
 
 
-(3000, 'È¨ÏÞ¹ÜÀí',0,'','','','',0,'1'),
+(3000, 'æƒé™ç®¡ç†',0,'','','','',0,'1'),
 
-(3001, '¹ÜÀíÔ±¹ÜÀí', 3000, 'Index','Admin','','',0,'1'),
-(3002, '¹ÜÀíÔ±ÁÐ±í', 3001, 'Index','Admin','index','',0,'1'),
-(3003, 'Ìí¼Ó¹ÜÀíÔ±', 3002, 'Index','Admin','add','',0,'0'),
-(3004, '¸üÐÂ¹ÜÀíÔ±', 3003, 'Index','Admin','edit','',0,'0'),
-(3005, 'É¾³ý¹ÜÀíÔ±', 3004, 'Index','Admin','delete','',0,'0'),
+(3001, 'ç®¡ç†å‘˜ç®¡ç†', 3000, 'Index','Admin','','',0,'1'),
+(3002, 'ç®¡ç†å‘˜åˆ—è¡¨', 3001, 'Index','Admin','index','',0,'1'),
+(3003, 'æ·»åŠ ç®¡ç†å‘˜', 3002, 'Index','Admin','add','',0,'0'),
+(3004, 'æ›´æ–°ç®¡ç†å‘˜', 3003, 'Index','Admin','edit','',0,'0'),
+(3005, 'åˆ é™¤ç®¡ç†å‘˜', 3004, 'Index','Admin','delete','',0,'0'),
 
-(3100, '½ÇÉ«¹ÜÀí', 3000,'Index','Role','','',0,'1'),
-(3101, '½ÇÉ«ÁÐ±í', 3100,'Index','Role','index','',0,'1'),
-(3102, 'Ìí¼Ó½ÇÉ«', 3100,'Index','Role','add','',0,'0'),
-(3103, '¸üÐÂ½ÇÉ«', 3100,'Index','Role','update','',0,'0'),
-(3104, 'É¾³ý½ÇÉ«', 3100,'Index','Role','delete','',0,'0'),
-(3105, '½ÇÉ«¸³È¨', 3100,'Index','Role','setPermission','',0,'0'),
-
-
-(4000, 'ÄÚÈÝ¹ÜÀí',0,'','','','',0,'1'),
-
-(4001, '·ÖÀà¹ÜÀí', 4000, 'Index','Category','','',0,'1'),
-(4002, '·ÖÀàÁÐ±í', 4001, 'Index','Category','index','',0,'1'),
-(4003, 'Ìí¼Ó·ÖÀà', 4001, 'Index','Category','add','',0,'0'),
-(4004, '¸üÐÂ·ÖÀà', 4001, 'Index','Category','edit','',0,'0'),
-(4005, 'É¾³ý·ÖÀà', 4001, 'Index','Category','delete','',0,'0'),
-(4006, '·ÖÀàÅÅÐò', 4001, 'Index','Category','sort','',0,'0'),
-
-(4100, 'ÎÄÕÂ¹ÜÀí', 4000, 'Index','News','','',0,'1'),
-(4101, 'ÎÄÕÂÁÐ±í', 4100, 'Index','News','index','',0,'1'),
-(4102, 'Ìí¼ÓÎÄÕÂ', 4100, 'Index','News','add','',0,'0'),
-(4103, '¸üÐÂÎÄÕÂ', 4100, 'Index','News','edit','',0,'0'),
-(4104, 'É¾³ýÎÄÕÂ', 4100, 'Index','News','sort','',0,'0'),
-(4105, 'ÎÄÕÂÅÅÐò', 4100, 'Index','News','sort','',0,'0'),
-
-(4200, 'ÓÑÇéÁ´½Ó', 4000, 'Index','Link','','',0,'1'),
-(4201, 'ÓÑÇéÁ´½ÓÁÐ±í', 4200,'Index','Link','index','',0,'1'),
-(4202, 'Ìí¼ÓÓÑÇéÁ´½Ó', 4200,'Index','Link','add','',0,'0'),
-(4203, '¸üÐÂÓÑÇéÁ´½Ó', 4200,'Index','Link','edit','',0,'0'),
-(4204, 'É¾³ýÓÑÇéÁ´½Ó', 4200,'Index','Link','delete','',0,'0'),
-(4205, 'ÓÑÇéÁ´½ÓÅÅÐò', 4200,'Index','Link','sort','',0,'0'),
-
-(4300, '¹ã¸æ¹ÜÀí', 4000,'Index','Ad','','',0,'1'),
-(4301, '¹ã¸æÎ»ÖÃÁÐ±í',4300,'Index','Ad','positionList','',0,'1'),
-(4302, 'Ìí¼Ó¹ã¸æÎ»ÖÃ',4300,'Index','Ad','positionAdd','',0,'0'),
-(4303, '¸üÐÂ¹ã¸æÎ»ÖÃ',4300,'Index','Ad','positionEdit','',0,'0'),
-(4304, 'É¾³ý¹ã¸æÎ»ÖÃ',4300,'Index','Ad','positionDelete','',0,'0'),
-(4305, '¹ã¸æÁÐ±í',4300,'Index','Ad','index','',0,'0'),
-(4306, 'Ìí¼Ó¹ã¸æ',4300,'Index','Ad','add','',0,'0'),
-(4307, '¸üÐÂ¹ã¸æ',4300,'Index','Ad','edit','',0,'0'),
-(4308, 'É¾³ý¹ã¸æ',4300,'Index','Ad','delete','',0,'0'),
-(4309, '¹ã¸æÅÅÐò',4300,'Index','Ad','sort','',0,'0'),
+(3100, 'è§’è‰²ç®¡ç†', 3000,'Index','Role','','',0,'1'),
+(3101, 'è§’è‰²åˆ—è¡¨', 3100,'Index','Role','list','',0,'1'),
+(3102, 'æ·»åŠ è§’è‰²', 3100,'Index','Role','add','',0,'0'),
+(3103, 'æ›´æ–°è§’è‰²', 3100,'Index','Role','edit','',0,'0'),
+(3104, 'åˆ é™¤è§’è‰²', 3100,'Index','Role','delete','',0,'0'),
+(3105, 'è§’è‰²èµ‹æƒ', 3100,'Index','Role','set-permission','',0,'0'),
 
 
+(4000, 'å†…å®¹ç®¡ç†',0,'','','','',0,'1'),
 
-(5000, 'ÓÃ»§¹ÜÀí',0,'','','','',0,'1'),
+(4001, 'åˆ†ç±»ç®¡ç†', 4000, 'Index','Category','','',0,'1'),
+(4002, 'åˆ†ç±»åˆ—è¡¨', 4001, 'Index','Category','list','',0,'1'),
+(4003, 'æ·»åŠ åˆ†ç±»', 4001, 'Index','Category','add','',0,'0'),
+(4004, 'æ›´æ–°åˆ†ç±»', 4001, 'Index','Category','edit','',0,'0'),
+(4005, 'åˆ é™¤åˆ†ç±»', 4001, 'Index','Category','delete','',0,'0'),
+(4006, 'åˆ†ç±»æŽ’åº', 4001, 'Index','Category','sort','',0,'0'),
 
-(5001, 'ÓÃ»§¹ÜÀí',5000,'Index','User','','',0,'1'),
-(5002, 'ÓÃ»§ÁÐ±í',5001,'Index','User','index','',0,'1'),
-(5003, 'Ìí¼ÓÓÃ»§',5001,'Index','User','add','',0,'0'),
-(5004, '¸üÐÂÓÃ»§',5001,'Index','User','edit','',0,'0'),
-(5005, '½ûÓÃÓÃ»§',5001,'Index','User','forbid','',0,'0'),
-(5006, '²é¿´ÓÃ»§ÏêÇé',5001,'Index','User','view','',0,'0'),
-(5007, '½â½ûÓÃ»§',5001,'Index','User','unforbid','',0,'0'),
+(4100, 'æ–‡ç« ç®¡ç†', 4000, 'Index','News','','',0,'1'),
+(4101, 'æ–‡ç« åˆ—è¡¨', 4100, 'Index','News','list','',0,'1'),
+(4102, 'æ·»åŠ æ–‡ç« ', 4100, 'Index','News','add','',0,'0'),
+(4103, 'æ›´æ–°æ–‡ç« ', 4100, 'Index','News','edit','',0,'0'),
+(4104, 'åˆ é™¤æ–‡ç« ', 4100, 'Index','News','delete','',0,'0'),
+(4105, 'æ–‡ç« æŽ’åº', 4100, 'Index','News','sort','',0,'0'),
 
-(6000, 'µÚÈý·½Ó¦ÓÃ', 0,'','','','',0,'1'),
-(6001, '¹«ÖÚºÅ¹ÜÀí',6000,'Index','WeChat','','',0,'1'),
-(6002, '¹«ÖÚºÅÁÐ±í',6001,'Index','WeChat','accountList','',0,'1'),
-(6003, 'Ìí¼Ó¹«ÖÚºÅ',6001,'Index','WeChat','addCccount','',0,'0'),
-(6004, '±à¼­¹«ÖÚºÅ',6001,'Index','WeChat','editAccount','',0,'0'),
-(6005, 'É¾³ý¹«ÖÚºÅ',6001,'Index','WeChat','deleteAccount','',0,'0'),
-(6006, '¹«ÖÚºÅ²Ëµ¥ÁÐ±í',6001,'Index','WeChat','accountMenuList','',0,'0'),
-(6007, 'Ìí¼Ó¹«ÖÚºÅ²Ëµ¥',6001,'Index','WeChat','addAccountMenu','',0,'0'),
-(6008, 'ÐÞ¸Ä¹«ÖÚºÅ²Ëµ¥',6001,'Index','WeChat','editAccountMenu','',0,'0'),
-(6009, 'É¾³ý¹«ÖÚºÅ²Ëµ¥',6001,'Index','WeChat','deleteAccountMenu','',0,'0'),
-(6010, 'ÍÆËÍ²Ëµ¥µ½Î¢ÐÅ¹«ÖÚºÅ',6001,'Index','WeChat','pushAccountMenuToWeChat','',0,'0'),
-(6011, 'Í¼ÎÄËØ²Ä¹ÜÀí', 6001, 'Index', 'WeChat', 'imageTextList', '', '0', '0'),
-(6012, 'Í¼ÎÄÎÄÕÂÁÐ±í', 6001, 'Index', 'WeChat', 'invoice', '', '0', '0'),
-(6013, 'Ìí¼ÓÍ¼ÎÄ', 6001, 'Index', 'WeChat', 'addImageText', '', '0', '0'),
-(6014, 'É¾³ýÍ¼ÎÄ', 6001, 'Index', 'WeChat', 'deleteImageText', '', '0', '0'),
-(6015, 'Í¼ÎÄÎÄÕÂÁÐ±í', 6001, 'Index', 'WeChat', 'imageTextArticleList', '', '0', '0'),
-(6016, 'Ìí¼ÓÍ¼ÎÄÎÄÕÂ', 6001, 'Index', 'WeChat', 'addImageTextArticle', '', '0', '0'),
-(6017, '±à¼­Í¼ÎÄÎÄÕÂ', 6001, 'Index', 'WeChat', 'editImageTextArticle', '', '0', '0'),
-(6018, 'É¾³ýÍ¼ÎÄÎÄÕÂ', 6001, 'Index', 'WeChat', 'deleteImageTextArticle', '', '0', '0'),
+(4200, 'å‹æƒ…é“¾æŽ¥', 4000, 'Index','Link','','',0,'1'),
+(4201, 'å‹æƒ…é“¾æŽ¥åˆ—è¡¨', 4200,'Index','Link','list','',0,'1'),
+(4202, 'æ·»åŠ å‹æƒ…é“¾æŽ¥', 4200,'Index','Link','add','',0,'0'),
+(4203, 'æ›´æ–°å‹æƒ…é“¾æŽ¥', 4200,'Index','Link','edit','',0,'0'),
+(4204, 'åˆ é™¤å‹æƒ…é“¾æŽ¥', 4200,'Index','Link','delete','',0,'0'),
+(4205, 'å‹æƒ…é“¾æŽ¥æŽ’åº', 4200,'Index','Link','sort','',0,'0'),
 
-(7000, 'ÉÌ³Ç¹ÜÀí', 0,'','','','',0,'1'),
-(7001, 'ÉÌ³Ç¹ÜÀí',7000,'Index','Shop','','',0,'1'),
-(7002, 'ÉÌ¼ÒÁÐ±í',7001,'Index','Shop','list','',0,'1'),
-(7003, 'Ìí¼ÓÉÌ¼Ò',7001,'Index','Shop','add','',0,'0'),
-(7004, '±à¼­ÉÌ¼Ò',7001,'Index','Shop','edit','',0,'0'),
-(7005, 'ÉÌ¼ÒÉ¾³ý',7001,'Index','Shop','delete','',0,'0'),
-(7007, 'ÉÌÆ·ÁÐ±í',7001,'Index','Goods','list','',0,'1'),
-(7008, 'ÉÌÆ·É¾³ý',7001,'Index','Goods','delete','',0,'0'),
-(7009, '¶©µ¥ÁÐ±í',7001,'Index','Order','list','',0,'1'),
-(7010, 'ÆÀÂÛÁÐ±í',7001,'Index','comment','list','',0,'1'),
-(7011, 'ÆÀÂÛÉ¾³ý', 7001, 'Index', 'comment', 'delete', '', '0', '0');
+(4300, 'å¹¿å‘Šç®¡ç†', 4000,'Index','Ad','','',0,'1'),
+(4301, 'å¹¿å‘Šä½ç½®åˆ—è¡¨',4300,'Index','Ad','positionList','',0,'1'),
+(4302, 'æ·»åŠ å¹¿å‘Šä½ç½®',4300,'Index','Ad','positionAdd','',0,'0'),
+(4303, 'æ›´æ–°å¹¿å‘Šä½ç½®',4300,'Index','Ad','positionEdit','',0,'0'),
+(4304, 'åˆ é™¤å¹¿å‘Šä½ç½®',4300,'Index','Ad','positionDelete','',0,'0'),
+(4305, 'å¹¿å‘Šåˆ—è¡¨',4300,'Index','Ad','index','',0,'0'),
+(4306, 'æ·»åŠ å¹¿å‘Š',4300,'Index','Ad','add','',0,'0'),
+(4307, 'æ›´æ–°å¹¿å‘Š',4300,'Index','Ad','edit','',0,'0'),
+(4308, 'åˆ é™¤å¹¿å‘Š',4300,'Index','Ad','delete','',0,'0'),
+(4309, 'å¹¿å‘ŠæŽ’åº',4300,'Index','Ad','sort','',0,'0');
