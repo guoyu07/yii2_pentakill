@@ -1,6 +1,7 @@
 <?php
 /**
  * 业务层基类。
+ *
  * @author winerQin
  * @date 2016-09-25
  */
